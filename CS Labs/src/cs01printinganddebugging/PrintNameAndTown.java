@@ -5,22 +5,23 @@ package cs01printinganddebugging;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Random;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import dose.DoseFile;
+import dose.DoseOutput;
 
 public class PrintNameAndTown 
 {
     // method main(): program starting point
     public static void main( String[] args ) 
 	{
-    	//Prepare window
-    	JFrame frame = PrepareDiags();
-    	
-    	//Run until "Close" button is pressed
     	try {
-			do { } while (GetName(frame) == 0);
+    		
+			//Prepare window
+			DoseOutput out = PrepareDiags();
+			
+			//Run until "Close" button is pressed
+			do { } while (GetName(out) == 0);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,35 +30,21 @@ public class PrintNameAndTown
     	System.exit(0);
 	}
     
-    public static JFrame PrepareDiags() {
+    public static DoseOutput PrepareDiags() throws Exception {
     	//Create a frame to output everything to
-    	JFrame frame = new JFrame("FrameDemo");
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.pack(); //Size the frame
-    	frame.setVisible(false);
+    	DoseOutput out = new DoseOutput(System.out, DoseOutput.CreateBlankJFrame());
     	
     	//Prepare console
-    	System.out.println("(C) 2014 Arthur Pachachura");
-    	System.out.println("This program uses the Dose library by Arthur Pachachura.\r\nLicensed under MIT.\r\n");
-    	System.out.println("You can find the source for this program at https://github.com/smo-key/cs/tree/master/CS%20Labs.");
-    	System.out.println("");
-    	
-    	//Display primary dialog
-    	Object[] options = {"OK"};
-    	JOptionPane.showOptionDialog(frame,
-			"(C) 2014 Arthur Pachachura\r\nThis program uses the Dose library by Arthur Pachachura.\r\nLicensed under MIT.\r\n\r\n" +
-			"You can find the source for this program at https://github.com/smo-key/cs/tree/master/CS%20Labs.", 
-		    "Copyright Notice",
-		    
-		    JOptionPane.OK_OPTION,
-		    JOptionPane.PLAIN_MESSAGE,
-		    null,
-		    options,
-		    options[0]);
-    	return frame;
+    	out.WriteDiag("(C) 2014 Arthur Pachachura\r\n" + 
+			"This program uses the Dose library by Arthur Pachachura.\r\nLicensed under MIT.\r\n\r\n" + 
+			"You can find the source for this program at https://github.com/smo-key/cs/tree/master/CS%20Labs.\r\n",
+			"Copyright Notice",
+			new Object[] {"OK"});
+
+    	return out;
     }
     
-    public static int GetName(JFrame frame) throws IOException, URISyntaxException
+    public static int GetName(DoseOutput out) throws IOException, URISyntaxException
     {    	
     	//load the textfiles using Dose
     	String[] dirs = new String[] { System.getProperty("user.dir") + "/bin", System.getProperty("user.dir") + "/" };
@@ -80,22 +67,12 @@ public class PrintNameAndTown
 	    	String name = readnthline(famous, randfamous);
 	    	String output = String.format("My name is %s and I am from %s.", name, city);
 	    	
-	    	//output the solution to stdout
-	    	System.out.println(String.format("My name is %s and I am from %s.", name, city));
-	    	System.out.println("(Run this program again to regenerate.)");
-	    	
-	    	//display the output dialog
-	    	Object[] options = {"Regenerate",
-                    "Close"};
-			return JOptionPane.showOptionDialog(frame, output, 
-			    "Print Name and Town",
-			    JOptionPane.YES_NO_OPTION,
-			    JOptionPane.PLAIN_MESSAGE,
-			    null,
-			    options,
-			    options[0]);
-	    	
-    	} catch (IOException e)
+	    	//output the solution
+	    	return out.WriteDiag(output, 
+	    			"Print Name and Town",
+	    			new String[] {"Regenerate", "Close"});
+
+	 	} catch (Exception e)
     	{
     		//Catch an exception
     		e.printStackTrace();
