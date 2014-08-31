@@ -15,14 +15,12 @@ public class PrintNameAndTown
     // method main(): program starting point
     public static void main( String[] args ) 
 	{
-    	//Print stuff
-    	System.out.println("(C) 2014 Arthur Pachachura");
-    	System.out.println("This program uses the Dose library by Arthur Pachachura.");
-    	System.out.println("");
+    	//Prepare window
+    	JFrame frame = PrepareDiags();
     	
     	//Run until "Close" button is pressed
     	try {
-			do { } while (GetName() == 0);
+			do { } while (GetName(frame) == 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,14 +29,36 @@ public class PrintNameAndTown
     	System.exit(0);
 	}
     
-    public static int GetName() throws IOException, URISyntaxException
-    {
+    public static JFrame PrepareDiags() {
     	//Create a frame to output everything to
     	JFrame frame = new JFrame("FrameDemo");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.pack(); //Size the frame
     	frame.setVisible(false);
     	
+    	//Prepare console
+    	System.out.println("(C) 2014 Arthur Pachachura");
+    	System.out.println("This program uses the Dose library by Arthur Pachachura.\r\nLicensed under MIT.\r\n");
+    	System.out.println("You can find the source for this program at https://github.com/smo-key/cs/tree/master/CS%20Labs.");
+    	System.out.println("");
+    	
+    	//Display primary dialog
+    	Object[] options = {"OK"};
+    	JOptionPane.showOptionDialog(frame,
+			"(C) 2014 Arthur Pachachura\r\nThis program uses the Dose library by Arthur Pachachura.\r\nLicensed under MIT.\r\n\r\n" +
+			"You can find the source for this program at https://github.com/smo-key/cs/tree/master/CS%20Labs.", 
+		    "Copyright Notice",
+		    
+		    JOptionPane.OK_OPTION,
+		    JOptionPane.PLAIN_MESSAGE,
+		    null,
+		    options,
+		    options[0]);
+    	return frame;
+    }
+    
+    public static int GetName(JFrame frame) throws IOException, URISyntaxException
+    {    	
     	//load the textfiles using Dose
     	String[] dirs = new String[] { System.getProperty("user.dir") + "/bin", System.getProperty("user.dir") + "/" };
     	final DoseFile cities = new DoseFile("citiesusa.txt", dirs, PrintNameAndTown.class);
