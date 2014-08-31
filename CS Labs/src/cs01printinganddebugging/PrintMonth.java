@@ -1,4 +1,4 @@
-package cs01.printinganddebugging;
+package cs01printinganddebugging;
 
 public class PrintMonth {
 
