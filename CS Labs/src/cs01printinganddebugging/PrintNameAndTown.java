@@ -17,66 +17,47 @@ import java.util.jar.JarFile;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import dose.DoseFile;
+
 public class PrintNameAndTown 
 {
     // method main(): program starting point
     public static void main( String[] args ) 
 	{
+    	//Print stuff
+    	System.out.println("(C) 2014 Arthur Pachachura");
+    	System.out.println("This program uses the Dose library by Arthur Pachachura.");
+    	System.out.println("");
+    	
+    	//Run until "Close" button is pressed
     	try {
 			do { } while (GetName() == 0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
-		}  	
+		}
+    	
+    	//Exit with status 0 (OK)
+    	System.exit(0);
 	}
     
-    public static int GetName() throws IOException
+    public static int GetName() throws IOException, URISyntaxException
     {
-    	//Global directory information
-    	final String thispackage = PrintNameAndTown.class.getPackage().getName();
-    	
     	//Create a frame to output everything to
     	JFrame frame = new JFrame("FrameDemo");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.pack(); //Size the frame
     	frame.setVisible(false);
-    	   	
-    	//find correct directory for text files
-    	//System.out.println(System.getProperty("user.dir")); //print current directory
-    	File dir = new File("bin/" + thispackage + "/");
-    	if (!dir.exists())
-    	{
-    		dir = new File("/" + thispackage + "/");
-    		if (!dir.exists())
-        	{
-    			System.out.println(String.format("Folder %s not found, this must be a JAR", dir.getName()));
-    			// Load the directory as a resource and extract files locally
-    			File file = new File("citiesusa.txt");
-    			if (!file.exists()) {
-    			    InputStream link = (PrintNameAndTown.class.getResourceAsStream("citiesusa.txt"));
-    			    Files.copy(link, file.getAbsoluteFile().toPath());
-    			}
-    			file = new File("famous.txt");
-    			if (!file.exists()) {
-    			    InputStream link = (PrintNameAndTown.class.getResourceAsStream("famous.txt"));
-    			    Files.copy(link, file.getAbsoluteFile().toPath());
-    			}
-    			//URL dir_url = ClassLoader.getSystemResource(thispackage + "/");
-    			//String dir_url = PrintNameAndTown.class.getResource(thispackage + "/").toString();
-    			// Turn the resource into a File object
-    			dir = new File(".");
-        	}
-    	}
     	
-    	//set text files to correct directory
-    	final String citiestxt = dir + "/citiesusa.txt";
-    	final String famoustxt = dir + "/famous.txt";
+    	//load the textfiles using Dose
+    	String[] dirs = new String[] { System.getProperty("user.dir") + "/bin", System.getProperty("user.dir") + "/" };
+    	final DoseFile cities = new DoseFile("citiesusa.txt", dirs, PrintNameAndTown.class);
+    	final DoseFile famous = new DoseFile("famous.txt", dirs, PrintNameAndTown.class);
     	
     	try 
     	{
     		//count how many lines in the text file
-	    	int lcities = countLines(citiestxt);
-	    	int lfamous = countLines(famoustxt);
+	    	int lcities = countLines(cities);
+	    	int lfamous = countLines(famous);
 	    	
 	    	//randomize which line we're going to select
 	    	Random rand = new java.util.Random();
@@ -84,8 +65,8 @@ public class PrintNameAndTown
 	    	int randfamous = rand.nextInt(lfamous);
 	    	
 	    	//read each file
-	    	String city = readnthline(citiestxt, randcities);
-	    	String name = readnthline(famoustxt, randfamous);
+	    	String city = readnthline(cities, randcities);
+	    	String name = readnthline(famous, randfamous);
 	    	String output = String.format("My name is %s and I am from %s.", name, city);
 	    	
 	    	//output the solution to stdout
@@ -96,7 +77,7 @@ public class PrintNameAndTown
 	    	Object[] options = {"Regenerate",
                     "Close"};
 			return JOptionPane.showOptionDialog(frame, output, 
-			    "",
+			    "Print Name and Town",
 			    JOptionPane.YES_NO_OPTION,
 			    JOptionPane.PLAIN_MESSAGE,
 			    null,
@@ -105,14 +86,15 @@ public class PrintNameAndTown
 	    	
     	} catch (IOException e)
     	{
-    		System.err.println(String.format("%s", e.getMessage()));
+    		//Catch an exception
+    		e.printStackTrace();
     		return -1;
     	}
     }
 
-    //read the Nth line from A text file
-    public static String readnthline(String filename, int n) throws IOException {
-    	BufferedReader in = new BufferedReader(new FileReader(filename), 1024);
+    //read the Nth line from a text file
+    public static String readnthline(DoseFile file, int n) throws IOException {
+    	BufferedReader in = new BufferedReader(file.GetReader());
     	try
     	{
     		for (int i=0; i<n; i++)
@@ -126,8 +108,8 @@ public class PrintNameAndTown
     }
     
     //counts the amount of lines in a text file
-    public static int countLines(String filename) throws IOException {
-        InputStream is = new BufferedInputStream(new FileInputStream(filename));
+    public static int countLines(DoseFile file) throws IOException {
+        InputStream is = file.GetStream();
         try {
             byte[] c = new byte[1024];
             int count = 0;

@@ -3,6 +3,7 @@
 	<name>CS Labs</name>
 	<comment></comment>
 	<projects>
+		<project>CS Libs</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
