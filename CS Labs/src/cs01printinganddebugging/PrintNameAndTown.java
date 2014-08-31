@@ -4,16 +4,7 @@ package cs01printinganddebugging;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
