@@ -47,7 +47,7 @@ public class DoseFile extends File {
 	 * @throws URISyntaxException This should never happen.
 	 */
 	public DoseFile(String resource, String dir, Class relativeto) throws URISyntaxException {
-		super(TestProtocol(resource, dir, relativeto));
+		super(testProtocol(resource, dir, relativeto));
 		
 		callback = relativeto;
 		final String thispackage = relativeto.getPackage().getName();
@@ -63,7 +63,7 @@ public class DoseFile extends File {
 	 * @throws URISyntaxException This should never happen.
 	 */
 	public DoseFile(String resource, String[] possibledirs, Class relativeto) throws URISyntaxException {
-		super(TestProtocol(resource, possibledirs, relativeto));
+		super(testProtocol(resource, possibledirs, relativeto));
 		
 		callback = relativeto;
 		final String thispackage = relativeto.getPackage().getName();
@@ -74,8 +74,8 @@ public class DoseFile extends File {
 	 * Get an InputStream resource from this DoseFile.
 	 * @return Returns an InputStream representing this file.
 	 */
-	public InputStream GetStream() {
-		if (IsInJAR()) {
+	public InputStream getStream() {
+		if (isInJAR()) {
 			return callback.getResourceAsStream("/" + path);
 		}
 		else {
@@ -92,15 +92,15 @@ public class DoseFile extends File {
 	 * Get an InputStreamReader from this Dose File.
 	 * @return Returns an InputStreamReader representing this file.
 	 */
-	public InputStreamReader GetReader() {
-		return new InputStreamReader(GetStream());
+	public InputStreamReader getReader() {
+		return new InputStreamReader(getStream());
 	}
 	
 	/**
 	 * Returns true if this file is located in a JAR.
 	 * @return Returns true if this file is located in a JAR, false otherwise.
 	 */
-	public Boolean IsInJAR() {
+	public Boolean isInJAR() {
 		Boolean isinjar = this.toString().contains("!/" + path);
 		return isinjar;
 	}
@@ -113,7 +113,7 @@ public class DoseFile extends File {
 	 * @param relativeto File must be in the same directory as this class.  Usually the class that creates this DoseFile.
 	 * @return
 	 */
-	private static String GetAbsoluteFile(String resource, String dir, Class relativeto) {
+	private static String getAbsoluteFile(String resource, String dir, Class relativeto) {
 		final String thispackage = relativeto.getPackage().getName();
 		return dir + "/" + thispackage + "/" + resource;
 	}
@@ -126,7 +126,7 @@ public class DoseFile extends File {
 	 * @return Returns a URI of the precise JAR file in the form {baseURI}!/{package}/{resource}.  If you want to add this directly to a web browser, convert this to a string and prepend "jar:".
 	 * @throws URISyntaxException Throws an error if the file mentioned in baseURIs does not exist.
 	 */
-	private static URI GetAbsoluteJar(URI baseURI, String resource, Class relativeto) throws URISyntaxException {
+	private static URI getAbsoluteJar(URI baseURI, String resource, Class relativeto) throws URISyntaxException {
 		final String thispackage = relativeto.getPackage().getName();
 		String stringuri = baseURI.toString();
 		stringuri = stringuri + "!/" + thispackage + "/" + resource;
@@ -142,9 +142,9 @@ public class DoseFile extends File {
 	 * @param relativeto File must be in the same directory as this class.  Usually the class that creates this DoseFile.
 	 * @return Returns an instance of the File if it exists, false otherwise.
 	 */
-	private static File TestLocal(String resource, String dir, Class relativeto) {
+	private static File testLocal(String resource, String dir, Class relativeto) {
 		//test local file first
-		File file = new File(GetAbsoluteFile(resource, dir, relativeto));
+		File file = new File(getAbsoluteFile(resource, dir, relativeto));
 		if (file.exists()) {
 			return file;
 		}
@@ -161,13 +161,13 @@ public class DoseFile extends File {
 	 * @return Returns an absolute URI.
 	 * @throws URISyntaxException This should never happen.
 	 */
-	private static URI TestProtocol(String resource, String dir, Class relativeto) throws URISyntaxException {		
+	private static URI testProtocol(String resource, String dir, Class relativeto) throws URISyntaxException {		
 		//Test local files first
-		if (TestLocal(resource, dir, relativeto) != null) 
-		{ return MakeLocalURI(resource, dir, relativeto); }
+		if (testLocal(resource, dir, relativeto) != null) 
+		{ return makeLocalURI(resource, dir, relativeto); }
 		
 		//If all tests fail, return URI of file in JAR
-		URI JarURI = GetAbsoluteJar(GetConnection(resource, relativeto).getJarFileURL().toURI(), resource, relativeto);
+		URI JarURI = getAbsoluteJar(getConnection(resource, relativeto).getJarFileURL().toURI(), resource, relativeto);
 		return JarURI;
 	}
 	
@@ -180,16 +180,16 @@ public class DoseFile extends File {
 	 * @return Returns the absolute URI of the first file that exists.
 	 * @throws URISyntaxException
 	 */
-	private static URI TestProtocol(String resource, String[] possibledirs, Class relativeto) throws URISyntaxException {
+	private static URI testProtocol(String resource, String[] possibledirs, Class relativeto) throws URISyntaxException {
 
 		//Test local files first
 		for (int i=0; i<possibledirs.length; i++) {
-			if (TestLocal(resource, possibledirs[i], relativeto) != null) 
-			{ return MakeLocalURI(resource, possibledirs[i], relativeto); }
+			if (testLocal(resource, possibledirs[i], relativeto) != null) 
+			{ return makeLocalURI(resource, possibledirs[i], relativeto); }
 		}
 		
 		//If all tests fail, return URI of file in JAR
-		URI JarURI = GetAbsoluteJar(GetConnection(resource, relativeto).getJarFileURL().toURI(), resource, relativeto);
+		URI JarURI = getAbsoluteJar(getConnection(resource, relativeto).getJarFileURL().toURI(), resource, relativeto);
 		return JarURI;
 	}
 	
@@ -201,8 +201,8 @@ public class DoseFile extends File {
 	 * @param relativeto File must be in the same directory as this class.  Usually the class that creates this DoseFile.
 	 * @return Returns an absolute URI instance of a local file.
 	 */
-	private static URI MakeLocalURI(String resource, String dir, Class relativeto) {
-		File file = new File(GetAbsoluteFile(resource, dir, relativeto));
+	private static URI makeLocalURI(String resource, String dir, Class relativeto) {
+		File file = new File(getAbsoluteFile(resource, dir, relativeto));
 		return file.toURI();
 	}
 	
@@ -213,7 +213,7 @@ public class DoseFile extends File {
 	 * @param relativeto File must be in the same directory as this class.  Usually the class that creates this DoseFile.
 	 * @return Throws an insane exception if the file does not exist.
 	 */
-	private static JarURLConnection GetConnection(String resource, Class relativeto) {
+	private static JarURLConnection getConnection(String resource, Class relativeto) {
 		try {
 			final String thispackage = relativeto.getPackage().getName();
 			URL url = ClassLoader.getSystemResource(thispackage + "/" + resource);

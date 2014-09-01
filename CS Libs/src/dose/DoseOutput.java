@@ -22,6 +22,11 @@ public class DoseOutput extends PrintStream {
 	public JFrame frame = null;
 	
 	/**
+	 * Buffer where unwritten string is stored.
+	 */
+	private String buffer = "";
+	
+	/**
 	 * Initialize an output doubler stream straight from another PrintStream (recommended: System.out).
 	 */
 	public DoseOutput(PrintStream stream, JFrame frame) {
@@ -59,10 +64,52 @@ public class DoseOutput extends PrintStream {
 	 * Explicitly set defaults of this output doubler.
 	 * @param messagestyle Message style as defined by JOptionPane.xxx_MESSAGE. (Defaults to PLAIN_MESSAGE)
 	 */
-	public void SetDefaults(int messagestyle) {
+	public void setDefaults(int messagestyle) {
 		this.messagestyle = messagestyle;
 	}
+	
+	/**
+	 * Prints a line to the line buffer
+	 */
+	public void println(String line)
+	{
+		buffer += line + "\r\n";
+	}
+	/**
+	 * Clears the line buffer
+	 */
+	public void clear() {
+		buffer = "";
+	}
 
+	/**
+	 * Write to stream directly from the write buffer then display a dialog.
+	 * @param title Title of the modal dialog
+	 * @param options A list of 1 to 3 options, preferably as a String[]
+	 * @return Selected value of the dialog.
+	 * @throws Exception Throws exception on any error (most likely: defaultoption or options out of range)
+	 */
+	public int writeDiag(String title, Object[] options) throws Exception {
+		//Write Text to Stdout
+		super.println(buffer);
+    	
+    	//Display primary dialog
+		final int[] possible = new int[] { JOptionPane.OK_OPTION, JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_CANCEL_OPTION };
+    	if (options.length < 1 || options.length > 3) { throw new Exception("Dialog only allows 1 to 3 options!"); }
+    	int opt = possible[options.length];
+		
+    	int o = JOptionPane.showOptionDialog(frame,
+			buffer, 
+		    title,
+		    opt,
+		    messagestyle,
+		    null,
+		    options,
+		    options[0]);
+    	clear();
+    	return o;
+	}
+	
 	/**
 	 * Write to stream then display a dialog.
 	 * @param text Text to write
@@ -71,7 +118,7 @@ public class DoseOutput extends PrintStream {
 	 * @return Selected value of the dialog.
 	 * @throws Exception Throws exception on any error (most likely: defaultoption or options out of range)
 	 */
-	public int WriteDiag(String text, String title, Object[] options) throws Exception {
+	public int writeDiag(String text, String title, Object[] options) throws Exception {
 		//Write Text to Stdout
 		super.println(text);
     	
@@ -100,9 +147,9 @@ public class DoseOutput extends PrintStream {
 	 * @return Selected value of the dialog.
 	 * @throws Exception Throws exception on any error (most likely: defaultoption or options out of range)
 	 */
-	public int WriteDiag(String text, String title, Object[] options, int defaultoption, int messagestyle) throws Exception {
+	public int writeDiag(String text, String title, Object[] options, int defaultoption, int messagestyle) throws Exception {
 		//Write Text to Stdout
-		this.println(text);
+		super.println(text);
     	
     	//Display primary dialog
 		final int[] possible = new int[] { JOptionPane.OK_OPTION, JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_CANCEL_OPTION };
@@ -123,7 +170,7 @@ public class DoseOutput extends PrintStream {
 	 * Creates and returns a blank, invisible JFrame.
 	 * @return A blank, invisible JFrame.
 	 */
-	public static JFrame CreateBlankJFrame() {
+	public static JFrame createBlankFrame() {
 		JFrame frame = new JFrame();
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.pack(); //Size the frame
