@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project CS Labs">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
-    <target name="create_run_jar">
-        <jar destfile="/media/arthur/Docs/git/cs/CS Labs/exp/cs01PrintNameAndTown.jar" filesetmanifest="mergewithoutmain">
+<project default="build" name="cs01" basedir=".">
+    <property name="dir" location="CS Labs/build/cs01/1PachachuraA"/>
+    <property name="cleandir" location="CS Labs/build/cs01"/>
+
+    <!--Build section                                        -->
+    <target name="build"  description="build files">
+        <jar destfile="${dir}PrintNameAndTown.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="cs01printinganddebugging.PrintNameAndTown"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="/docs/git/cs/CS Labs/bin"/>
-            <fileset dir="/docs/git/cs/CS Libs/bin"/>
+            <fileset dir="CS Labs/bin"/>
+            <fileset dir="CS Libs/bin"/>
+        </jar>
+	<jar destfile="${dir}PrintMonth.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="cs01printinganddebugging.PrintMonth"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="CS Labs/bin"/>
+            <fileset dir="CS Libs/bin"/>
+        </jar>
+	<jar destfile="${dir}PrintBio.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="cs01printinganddebugging.PrintBio"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="CS Labs/bin"/>
+            <fileset dir="CS Libs/bin"/>
         </jar>
     </target>
+
+    <!--Clean section                                        -->
+    <target name="clean" description="remove unnecessary files">
+    <delete dir="${cleandir}"/>
+    </target>
+
 </project>

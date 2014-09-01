@@ -33,15 +33,13 @@ public class PrintNameAndTown
     	System.exit(0);
 	}
     
-    public static int run(DoseOutput out) throws IOException, URISyntaxException
+    public static int run(DoseOutput out) throws Exception
     {    	
     	//load the textfiles using Dose
     	String[] dirs = new String[] { System.getProperty("user.dir") + "/bin", System.getProperty("user.dir") + "/" };
     	final DoseFile cities = new DoseFile("citiesusa.txt", dirs, PrintNameAndTown.class);
     	final DoseFile famous = new DoseFile("famous.txt", dirs, PrintNameAndTown.class);
     	
-    	try 
-    	{
     		//count how many lines in the text file
 	    	int lcities = IO.countLines(cities);
 	    	int lfamous = IO.countLines(famous);
@@ -60,12 +58,5 @@ public class PrintNameAndTown
 	    	return out.writeDiag(output, 
 	    			"Print Name and Town",
 	    			new String[] {"Regenerate", "Close"});
-
-	 	} catch (Exception e)
-    	{
-    		//Catch an exception
-    		e.printStackTrace();
-    		return -1;
-    	}
     }
 }
