@@ -1,0 +1,34 @@
+package cslabs;
+
+import java.io.OutputStream;
+import java.util.Scanner;
+
+public class cs08calculatorrunner
+{
+	public static void main(String[] args)
+	{
+		int num1;
+		int num2;
+		char operator;
+		
+		//instantiate a Scanner
+		Scanner in = new Scanner(System.in);
+
+		//prompt the user for the operator (how do you read in a character?)
+		System.out.print("User, what's the operation? (+,-,*,/,^,% only)  ");
+
+		//assign the input from the user to operator variable
+		char op = in.next().charAt(0);
+
+		//get the remaining inputs from the user
+		System.out.print("User, what's the operation? (+,-,*,/,^,% only)  ");
+		double 
+		//check for division by zero
+		//instantiate Calculator object with the values entered by the user
+		cs08calculator calc = new cs08calculator();
+		//call the toString() method to print the results
+
+
+
+	}
+}

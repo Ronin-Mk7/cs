@@ -1,0 +1,32 @@
+package cslabs;
+
+import java.util.Scanner;
+
+public class cs08calculatorrunner
+{
+	public static void main(String[] args)
+	{
+		int num1;
+		int num2;
+		char operator;
+		
+		//instantiate a Scanner
+		Scanner in = new Scanner(System.in);
+		
+
+		//prompt the user for the operator (how do you read in a character?)
+		
+
+		//assign the input from the user to operator variable
+
+
+		//setup a set of conditions below to determine if the operator is valid
+		//get the remaining inputs from the user
+		//check for division by zero
+		//instantiate Calculator object with the values entered by the user
+		//call the toString() method to print the results
+
+
+
+	}
+}
