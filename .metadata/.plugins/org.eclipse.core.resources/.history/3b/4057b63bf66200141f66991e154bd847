@@ -1,0 +1,66 @@
+package cslabs;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+
+public class cs11alice {
+
+	public static void main(String[] args) throws FileNotFoundException {
+		// Prepares files
+		Scanner in = new Scanner(new File("src/cslabs/alice.txt"));
+				
+		String[] letters = { "a", "e", "i", "o", "t" }; //letter list
+		List<String>[] sorted = (List<String>[]) new List<?>[5]; //final sorted lists
+		
+		for (int i=0; i<5; i++)
+		{
+			//initialize list
+			sorted[i] = new ArrayList<String>();
+		}		
+				
+		//read the file and add words to arrays
+		int wordsTotal = 0;
+		while (in.hasNext())
+		{
+			String word = in.next();
+			for (int i=0; i<5; i++)
+			{
+				if (word.contains(letters[i]))
+				{
+					sorted[i].add(word);
+				}
+			}
+			wordsTotal++;
+		}
+
+		PrintWriter out = new PrintWriter(new FileOutputStream("src/cslabs/aliceoutput.txt"));
+		out.println("ALICE OUTPUT\r\nWord Count: " + wordsTotal);
+		
+		for (int i=0; i<5; i++)
+		{
+			double percent = sorted[i].size()/wordsTotal;
+			out.println("Words with " + letters[i] + ": " + sorted[i].size() + 
+						" (" + percent + "%)");
+			sorted[i] = new ArrayList<String>(new HashSet<String>(sorted[i])); //remove duplicated
+			java.util.Collections.sort(sorted[i]); //sort alphabetically
+			out.println("Unique words with " + letters[i] + ": " + sorted[i].size() + 
+					" (" + percent + "%)");
+		}
+		
+		out.println("-----------------------------------------");
+		
+		for (int i=0; i<5; i++)
+		{
+			
+			
+			for (int j=0; j<sorted[i].size(); j++)
+			out.println("Words with " + letters[i] + ": " + sorted[i].size() + 
+						" (" + percent + "%)");
+		}
+		
+	}
+
+}

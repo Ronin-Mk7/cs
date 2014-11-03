@@ -1,0 +1,42 @@
+package cslabs;
+
+public class cs09gcd
+{
+	//instance variables - DO NOT ADD ANY MORE INSTANCE VARIABLES
+	private int numerator;
+	private int denominator;
+	
+	//default constructor
+	public cs09gcd()
+	{
+		numerator = denominator = 0;
+		
+	}
+	
+	//initialization constructor
+	
+	
+	//modifier method for numerator
+	
+	
+	//modifier method for denominator
+	
+	
+	//accessor method for numerator
+	
+	
+	//accessor method for denominator
+	
+	
+	//method to determine gcd
+	
+	
+	//method to determine lowest term of numerator
+	
+	
+	//method to determine lowest term of denominator
+	
+	
+	//toString() method
+	
+}

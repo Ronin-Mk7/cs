@@ -1,0 +1,30 @@
+package cslabs;
+
+public class cs09gcdrunner
+{
+	//main method
+	public static void main(String[] args)
+	{
+		//instantiate Scanner object
+		Scanner in = new Scanner(System.in);
+		
+		//prompt user for numerator
+		
+		
+		//assign user input to variable
+		
+		
+		//prompt user for denominator
+		
+		
+		//assign user input to variable
+		
+		
+		//instantiate GCD object
+		
+		
+		//call toString() method
+		
+		
+	}
+}
