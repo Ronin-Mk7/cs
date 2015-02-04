@@ -56,33 +56,32 @@ abstract public class AbstractPong extends Canvas implements KeyListener, Runnab
     switch(toUpperCase(key))
     {
       case 'W' : return keys[0];
-      case 'Z' : return keys[1];
+      case 'S' : return keys[1];
       case 'I' : return keys[2];
       case 'M' : return keys[3];
     }
     return false;
   }
-
   public void keyPressed(KeyEvent e)
   {
-    switch(toUpperCase(e.getKeyChar()))
-    {
-      case 'W' : keys[0]=true; break;
-      case 'Z' : keys[1]=true; break;
-      case 'I' : keys[2]=true; break;
-      case 'M' : keys[3]=true; break;
-    }
+	 int keyCode = e.getKeyCode();
+	 switch( keyCode ) { 
+        case KeyEvent.VK_W: keys[0] = true; break;
+    	case KeyEvent.VK_S: keys[1] = true; break;
+        case KeyEvent.VK_UP: keys[2] = true; break;
+        case KeyEvent.VK_DOWN: keys[3] = true; break;
+     }
   }
 
   public void keyReleased(KeyEvent e)
   {
-    switch(toUpperCase(e.getKeyChar()))
-    {
-      case 'W' : keys[0]=false; break;
-      case 'Z' : keys[1]=false; break;
-      case 'I' : keys[2]=false; break;
-      case 'M' : keys[3]=false; break;
-    }
+	  int keyCode = e.getKeyCode();
+	 switch( keyCode ) { 
+        case KeyEvent.VK_W: keys[0] = false; break;
+    	case KeyEvent.VK_S: keys[1] = false; break;
+        case KeyEvent.VK_UP: keys[2] = false; break;
+        case KeyEvent.VK_DOWN: keys[3] = false; break;
+     }
   }
 
   public void keyTyped(KeyEvent e) {}
