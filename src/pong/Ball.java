@@ -28,7 +28,7 @@ public class Ball extends Block
   {
 	  super(200,200, col);
 	  
-	  xSpeed = 2;
+	  xSpeed = 4;
 	  ySpeed = 2;
   }
   

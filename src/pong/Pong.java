@@ -19,9 +19,9 @@ public class Pong extends AbstractPong
   {
 	  ball = new Ball(Color.black);
 	  
-	  leftPaddle = new Paddle(10, 0, 10, 50);
+	  leftPaddle = new Paddle(10, 0, 10, 200, 6);
 	  
-	  rightPaddle = new Paddle(780, 0, 10, 50);
+	  rightPaddle = new Paddle(780, 0, 10, 200, 6);
   }
 
   public void render(Graphics window)
@@ -31,49 +31,57 @@ public class Pong extends AbstractPong
     rightPaddle.draw(window, Color.black);
 
     //see if ball hits left wall or right wall
-    if(!(ball.getX()>=10 && ball.getX()<=780))
+    if((ball.getX()<0 || ball.getX()>790))
     {
-      ball.setXSpeed(0);
-      ball.setYSpeed(0);
-    }
-
-
-    //see if the ball hits the top or bottom wall
-
-    if(!(ball.getY()>=10 && ball.getY()<=780))
-    {
-      ball.setYSpeed(-ball.getYSpeed());
+      ball.setXSpeed(-ball.getXSpeed());
     }
 
     
+    //see if the ball hits the top or bottom wall
+
+    if((ball.getY()<0 || ball.getY()>570))
+    {
+      ball.setYSpeed(-ball.getYSpeed());
+    }
+    
+    
+    if ((ball.getX() <= leftPaddle.getX()) && //check if paddle is within bounds of x
+		((leftPaddle.getY() <= ball.getY()) && (ball.getY() <= leftPaddle.getY() + leftPaddle.getHeight()) //check if paddle is within bounds of Y
+		))
+    {
+    	ball.setXSpeed(-ball.getXSpeed());
+    	ball.setYSpeed((int)(-ball.getYSpeed() + 0.1*(((Math.abs(leftPaddle.getY() + leftPaddle.getHeight()))/2) - (ball.getY()))));
+    	// + (int)((double)leftPaddle.getSpeed() * (1.5*(double)Math.random()-0.5));
+    }
+    
     //see if the ball hits the left paddle
-    if((ball.getX() <= leftPaddle.getX() +leftPaddle.getWidth() + Math.abs(ball.getXSpeed()) && (ball.getY() >= leftPaddle.getY() &&ball.getY() <= leftPaddle.getY() + leftPaddle.getHeight()  ||ball.getY() + ball.getHeight() >= leftPaddle.getY() &&ball.getY() +ball.getHeight()  < leftPaddle.getY() + leftPaddle.getHeight())))
-    {
-      if(ball.getX()<=leftPaddle.getX()+leftPaddle.getWidth()-Math.abs(ball.getXSpeed()))
-      {
-    	  ball.setYSpeed(-ball.getYSpeed());
-      }
-      else
-      { 
-    	  ball.setXSpeed(-ball.getXSpeed());
-      }
-   }
-
-
-
-    //see if the ball hits the right paddle
-
-    if((ball.getX() <= rightPaddle.getX() +rightPaddle.getWidth() + Math.abs(ball.getXSpeed()) && (ball.getY() >= rightPaddle.getY() &&ball.getY() <= rightPaddle.getY() + rightPaddle.getHeight()  ||ball.getY() + ball.getHeight() >= rightPaddle.getY() &&ball.getY() +ball.getHeight()  < rightPaddle.getY() + rightPaddle.getHeight())))
-    {
-      if(ball.getX()<=rightPaddle.getX()+rightPaddle.getWidth()-Math.abs(ball.getXSpeed()))
-      {
-    	  ball.setYSpeed(-ball.getYSpeed());
-      }
-      else
-      { 
-    	  ball.setXSpeed(-ball.getXSpeed());
-      }
-   }
+//    if((ball.getX() <= leftPaddle.getX() +leftPaddle.getWidth() + Math.abs(ball.getXSpeed()) && (ball.getY() >= leftPaddle.getY() &&ball.getY() <= leftPaddle.getY() + leftPaddle.getHeight()  ||ball.getY() + ball.getHeight() >= leftPaddle.getY() &&ball.getY() +ball.getHeight()  < leftPaddle.getY() + leftPaddle.getHeight())))
+//    {
+//      if(ball.getX()<=leftPaddle.getX()+leftPaddle.getWidth()-Math.abs(ball.getXSpeed()))
+//      {
+//    	  ball.setYSpeed(-ball.getYSpeed());
+//      }
+//      else
+//      { 
+//    	  ball.setXSpeed(-ball.getXSpeed());
+//      }
+//   }
+//
+//
+//
+//    //see if the ball hits the right paddle
+//
+//    if((ball.getX() <= rightPaddle.getX() +rightPaddle.getWidth() + Math.abs(ball.getXSpeed()) && (ball.getY() >= rightPaddle.getY() &&ball.getY() <= rightPaddle.getY() + rightPaddle.getHeight()  ||ball.getY() + ball.getHeight() >= rightPaddle.getY() &&ball.getY() +ball.getHeight()  < rightPaddle.getY() + rightPaddle.getHeight())))
+//    {
+//      if(ball.getX()<=rightPaddle.getX()+rightPaddle.getWidth()-Math.abs(ball.getXSpeed()))
+//      {
+//    	  ball.setYSpeed(-ball.getYSpeed());
+//      }
+//      else
+//      { 
+//    	  ball.setXSpeed(-ball.getXSpeed());
+//      }
+//   }
 
 
 
